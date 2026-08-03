@@ -6,13 +6,10 @@
   },
   "resources": {
     "models": {
-      "wheel": {
+      "wheel": { 
         "path": "wheel/3d-model.obj",
         "flip_uvs": false
       }
-    },
-    "shaders": {
-      "shader": "shader.glsl"
     }
   }
 }
