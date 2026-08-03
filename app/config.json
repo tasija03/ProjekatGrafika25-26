@@ -1,15 +1,18 @@
 {
+  "window": {
+    "width": 800,
+    "height": 600,
+    "title": "LunaPark Project"
+  },
   "resources": {
     "models": {
-      "dragon" : {
-        "path" : "dragon/dragon.obj",
-        "flip_uvs" : false
+      "wheel": {
+        "path": "wheel/3d-model.obj",
+        "flip_uvs": false
       }
+    },
+    "shaders": {
+      "shader": "shader.glsl"
     }
-  },
-  "window": {
-    "height": 600,
-    "title": "Hello, window!",
-    "width": 800
   }
 }
