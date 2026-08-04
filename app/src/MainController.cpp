@@ -35,13 +35,17 @@ namespace app {
         shader->set_mat4("view", graphics->camera()->view_matrix());
         glm::mat4 model = glm::mat4(1.0f);
 
-        model = glm::translate(model, glm::vec3(-0.55f, -0.8f, -3.0f));
-
         auto curr_time = platform->frame_time().current;
         auto speed = 1.0f;
-        model = glm::rotate(model, curr_time*speed, glm::vec3(0.0f, 0.0f, 1.0f));
+
+        model = glm::translate(model, glm::vec3(-0.55f, -0.8f, -3.0f));
+
+        model = glm::rotate(model, curr_time*speed, glm::vec3(1.0f, 0.0f, 1.0f));
 
         model = glm::scale(model, glm::vec3(0.00005f));
+
+        //model = glm::translate(model, glm::vec3(-1213.9f, 10000.0f, 1835.4f));  //model ima centar u 1213.9, 20389.0, -1835.4
+
         shader->set_mat4("model", model);
 
         wheel->draw(shader);
