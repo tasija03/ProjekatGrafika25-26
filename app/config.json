@@ -7,9 +7,14 @@
   "resources": {
     "models": {
       "wheel": { 
-        "path": "wheel/3d-model.obj",
+        "path": "wheel/wheel.obj",
+        "flip_uvs": false
+      },
+      "stalak": { 
+        "path": "wheel/stalak.obj",
         "flip_uvs": false
       }
     }
+    
   }
 }

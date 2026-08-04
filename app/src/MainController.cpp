@@ -27,12 +27,20 @@ namespace app {
         auto graphics = engine::core::Controller::get<engine::graphics::GraphicsController>();
         auto platform = engine::core::Controller::get<engine::platform::PlatformController>();
         engine::resources::Model *wheel = resources->model("wheel");
+        engine::resources::Model *stalak = resources->model("stalak");
         engine::resources::Shader *shader = resources->shader("shader");
 
         shader->use();
 
         shader->set_mat4("projection", graphics->projection_matrix());
         shader->set_mat4("view", graphics->camera()->view_matrix());
+
+        glm::mat4 stalak_model = glm::mat4(1.0f);
+        stalak_model = glm::translate(stalak_model, glm::vec3(-0.55f, -0.8f, -3.0f));
+        stalak_model = glm::scale(stalak_model, glm::vec3(0.00005f));
+        shader->set_mat4("model", stalak_model);
+        stalak->draw(shader);
+
         glm::mat4 model = glm::mat4(1.0f);
 
         auto curr_time = platform->frame_time().current;
