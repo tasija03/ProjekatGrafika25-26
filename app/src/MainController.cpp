@@ -6,7 +6,7 @@
 
 namespace app {
     void MainController::initialize() {
-        // Initialize your controller here
+        engine::graphics::OpenGL::enable_depth_testing();
     }
 
     bool MainController::loop() {
