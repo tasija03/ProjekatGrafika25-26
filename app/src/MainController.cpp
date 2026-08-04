@@ -28,9 +28,12 @@ namespace app {
 
     void MainController::begin_draw() {
         engine::graphics::OpenGL::clear_buffers();
+
     }
 
     void MainController::end_draw() {
+        auto pltform = engine::core::Controller::get<engine::platform::PlatformController>();
+        pltform->swap_buffers();
     }
 
     void MainController::draw() {
