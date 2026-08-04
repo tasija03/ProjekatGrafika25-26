@@ -7,6 +7,7 @@ namespace app {
     class MainController : public engine::core::Controller{
         void initialize() override;
         bool loop() override;
+        void draw_wheel();
         void draw() override;
     };
 }
