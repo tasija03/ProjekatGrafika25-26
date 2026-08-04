@@ -1,3 +1,5 @@
+//#shader vertex
+
 #version 330 core
 
 layout(location = 0) in vec3 aPos;
@@ -23,15 +25,15 @@ void main()
         vec4(FragPos, 1.0);
 }
 
+//#shader fragment
+
 #version 330 core
 
 out vec4 FragColor;
 
 in vec2 TexCoords;
 
-uniform sampler2D texture_diffuze;
-
 void main()
 {
-    FragColor = vec4(texture(texture_diffuze, TexCoords).rgb, 1.0);
+    FragColor = vec4(1.0, 0.0, 0.0, 1.0);
 }
