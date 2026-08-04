@@ -2,6 +2,7 @@
 #include <engine/core/Controller.hpp>
 #include <engine/platform/PlatformController.hpp>
 #include <engine/resources/ResourcesController.hpp>
+#include <engine/graphics/OpenGL.hpp>
 
 namespace app {
     void MainController::initialize() {
@@ -23,6 +24,13 @@ namespace app {
         engine::resources::Shader *shader = resources->shader("shader");
 
         model->draw(shader);
+    }
+
+    void MainController::begin_draw() {
+        engine::graphics::OpenGL::clear_buffers();
+    }
+
+    void MainController::end_draw() {
     }
 
     void MainController::draw() {

@@ -9,6 +9,8 @@ namespace app {
         bool loop() override;
         void draw_wheel();
         void draw() override;
+        void begin_draw() override;
+        void end_draw() override;
     };
 }
 
