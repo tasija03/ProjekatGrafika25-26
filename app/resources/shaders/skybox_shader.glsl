@@ -4,7 +4,7 @@
 
 layout(location = 0) in vec3 aPos;
 
-out vec2 TexCoords;
+out vec3 TexCoords;
 
 uniform mat4 view;
 uniform mat4 projection;
@@ -25,7 +25,7 @@ void main()
 
 out vec4 FragColor;
 
-in vec2 TexCoords;
+in vec3 TexCoords;
 
 uniform samplerCube skybox;
 
