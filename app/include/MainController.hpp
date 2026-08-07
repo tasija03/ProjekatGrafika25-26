@@ -6,6 +6,11 @@
 
 namespace app {
     class MainController : public engine::core::Controller{
+
+        private:
+            bool spotLightEnabled = true;
+            bool lastLKeyState = false;
+
         void initialize() override;
         bool loop() override;
         void begin_draw() override;

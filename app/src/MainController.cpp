@@ -9,6 +9,7 @@
 
 
 namespace app {
+
     void MainController::initialize() {
         engine::graphics::OpenGL::enable_depth_testing();
     }
@@ -18,6 +19,12 @@ namespace app {
         if(platform->key(engine::platform::KeyId::KEY_ESCAPE).is_down()){
             return false;
         }
+
+        bool isLKeyPressed = platform->key(engine::platform::KeyId::KEY_L).is_down();
+        if (isLKeyPressed && !lastLKeyState) {
+            spotLightEnabled = !spotLightEnabled;
+        }
+        lastLKeyState = isLKeyPressed;
 
         return true;
     }
@@ -45,9 +52,16 @@ namespace app {
         shader->set_float("spotLight.constant", 1.0f);
         shader->set_float("spotLight.linear", 0.045f);
         shader->set_float("spotLight.quadratic", 0.0075f);
-        shader->set_vec3("spotLight.ambient", glm::vec3(0.0f));
-        shader->set_vec3("spotLight.diffuse", glm::vec3(2.0f));
-        shader->set_vec3("spotLight.specular", glm::vec3(1.0f));
+        
+        if (spotLightEnabled) {
+            shader->set_vec3("spotLight.ambient", glm::vec3(0.0f));
+            shader->set_vec3("spotLight.diffuse", glm::vec3(1.0f));
+            shader->set_vec3("spotLight.specular", glm::vec3(1.0f));
+        } else {
+            shader->set_vec3("spotLight.ambient", glm::vec3(0.0f));
+            shader->set_vec3("spotLight.diffuse", glm::vec3(0.0f));  
+            shader->set_vec3("spotLight.specular", glm::vec3(0.0f)); 
+        }
     }
 
     void MainController::draw_ground(){
