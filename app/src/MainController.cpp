@@ -4,6 +4,8 @@
 #include <engine/resources/ResourcesController.hpp>
 #include <engine/graphics/OpenGL.hpp>
 #include <engine/graphics/GraphicsController.hpp>
+#include <engine/resources/Mesh.hpp>
+#include <engine/resources/Texture.hpp>
 
 
 namespace app {
@@ -20,6 +22,26 @@ namespace app {
         return true;
     }
 
+    void MainController::draw_ground(){
+        auto resources = engine::core::Controller::get<engine::resources::ResourcesController>();
+        auto graphics = engine::core::Controller::get<engine::graphics::GraphicsController>();
+
+        engine::resources::Model *stage = resources->model("stage");
+        engine::resources::Shader *shader = resources->shader("shader_ground");
+
+        shader->use();
+        shader->set_mat4("projection", graphics->projection_matrix());
+        shader->set_mat4("view", graphics->camera()->view_matrix());
+        glm::mat4 stage_model = glm::mat4(1.0f);
+        stage_model = glm::translate(stage_model, glm::vec3(0.0f, 2.0f, -10.0f));
+        stage_model = glm::rotate(stage_model, glm::radians(10.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+        stage_model = glm::scale(stage_model, glm::vec3(1.0f));
+        shader->set_mat4("model", stage_model);
+        stage->draw(shader);
+
+
+    }
+
     void MainController::draw_wheel(){
 
 
@@ -28,18 +50,17 @@ namespace app {
         auto platform = engine::core::Controller::get<engine::platform::PlatformController>();
         engine::resources::Model *wheel = resources->model("wheel");
         engine::resources::Model *stalak = resources->model("stalak");
-        engine::resources::Model *carousel = resources->model("carousel");
         engine::resources::Shader *shader = resources->shader("shader");
 
         shader->use();
 
         shader->set_mat4("projection", graphics->projection_matrix());
         shader->set_mat4("view", graphics->camera()->view_matrix());
-       
+
         /*stalak od pan. tocka*/
         glm::mat4 stalak_model = glm::mat4(1.0f);
 
-        stalak_model = glm::translate(stalak_model, glm::vec3(-0.6f, -0.8f, -3.0f));
+        stalak_model = glm::translate(stalak_model, glm::vec3(-0.6f, -0.8f, -4.0f));
         stalak_model = glm::scale(stalak_model, glm::vec3(0.00005f));
         shader->set_mat4("model", stalak_model);
         stalak->draw(shader);
@@ -50,7 +71,7 @@ namespace app {
         auto curr_time = platform->frame_time().current;
         auto speed = 1.0f;
 
-        model = glm::translate(model, glm::vec3(-0.6f, -0.8f, -3.0f));
+        model = glm::translate(model, glm::vec3(-0.6f, -0.8f, -4.0f));
         model = glm::translate(model, glm::vec3(0.0f, 0.62f, 0.0f));
         model = glm::rotate(model, speed*curr_time, glm::normalize(glm::vec3(1.0f, 0.0f, 1.0f)));
         model = glm::translate(model, glm::vec3(0.0f, -0.62f, 0.0f));
@@ -60,13 +81,27 @@ namespace app {
 
         wheel->draw(shader);
 
-        /*karusel*/
+    }
+
+    void MainController::draw_carousel(){
+        auto resources = engine::core::Controller::get<engine::resources::ResourcesController>();
+        auto graphics = engine::core::Controller::get<engine::graphics::GraphicsController>();
+        auto platform = engine::core::Controller::get<engine::platform::PlatformController>();
+
+
+        engine::resources::Model *carousel = resources->model("carousel");
+        engine::resources::Shader *shader = resources->shader("shader");
+
+        auto curr_time = platform->frame_time().current;
+        auto speed = 1.0f;
+
         glm::mat4 carousel_model = glm::mat4(1.0f);
-        carousel_model = glm::translate(carousel_model, glm::vec3(0.6f, -0.8f, -3.0f));
+        carousel_model = glm::translate(carousel_model, glm::vec3(0.6f, -0.8f, -4.0f));
         carousel_model = glm::rotate(carousel_model, curr_time*speed, glm::normalize(glm::vec3(0.0f, 1.0f, 0.0f)));
         carousel_model = glm::scale(carousel_model, glm::vec3(0.018f));
         shader->set_mat4("model", carousel_model);
         carousel->draw(shader);
+ 
     }
 
     void MainController::draw_skybox(){
@@ -85,8 +120,10 @@ namespace app {
     }
 
     void MainController::draw() {
-        draw_wheel();
         draw_skybox();
+        draw_wheel();
+        draw_carousel();
+        draw_ground();
     }
 
 

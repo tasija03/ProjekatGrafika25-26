@@ -9,6 +9,8 @@ namespace app {
         bool loop() override;
         void begin_draw() override;
         void draw_wheel();
+        void draw_carousel();
+        void draw_ground();
         void draw_skybox();
         void draw() override;
         void end_draw() override;

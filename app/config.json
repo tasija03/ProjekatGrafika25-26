@@ -17,8 +17,11 @@
       "carousel": { 
         "path": "carousel/carousel.obj",
         "flip_uvs": false
+      },
+      "stage": { 
+        "path": "stage/stage.obj",
+        "flip_uvs": false
       }
-    }
-    
+    } 
   }
 }
