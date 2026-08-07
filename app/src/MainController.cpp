@@ -22,6 +22,23 @@ namespace app {
         return true;
     }
 
+    void MainController::lighting(engine::resources::Shader *shader){
+
+        auto resources = engine::core::Controller::get<engine::resources::ResourcesController>();
+        auto graphics = engine::core::Controller::get<engine::graphics::GraphicsController>();
+
+        shader->set_vec3("viewPos", graphics->camera()->Position);
+
+        
+        shader->set_float("material.shininess", 128.0f);
+        shader->set_vec3("material.specular", glm::vec3(1.5f));
+
+        shader->set_vec3("dirLight.direction", glm::vec3(1.0f, -1.0f, 1.0f));
+        shader->set_vec3("dirLight.ambient", glm::vec3(0.4f));
+        shader->set_vec3("dirLight.diffuse", glm::vec3(0.9f));
+        shader->set_vec3("dirLight.specular", glm::vec3(1.5f)); 
+    }
+
     void MainController::draw_ground(){
         auto resources = engine::core::Controller::get<engine::resources::ResourcesController>();
         auto graphics = engine::core::Controller::get<engine::graphics::GraphicsController>();
@@ -30,6 +47,7 @@ namespace app {
         engine::resources::Shader *shader = resources->shader("shader_ground");
 
         shader->use();
+        lighting(shader);
         shader->set_mat4("projection", graphics->projection_matrix());
         shader->set_mat4("view", graphics->camera()->view_matrix());
         glm::mat4 stage_model = glm::mat4(1.0f);
@@ -53,6 +71,8 @@ namespace app {
         engine::resources::Shader *shader = resources->shader("shader");
 
         shader->use();
+        
+        lighting(shader);
 
         shader->set_mat4("projection", graphics->projection_matrix());
         shader->set_mat4("view", graphics->camera()->view_matrix());
@@ -94,6 +114,11 @@ namespace app {
 
         auto curr_time = platform->frame_time().current;
         auto speed = 1.0f;
+
+        shader->use();
+        lighting(shader);
+        shader->set_mat4("projection", graphics->projection_matrix());
+        shader->set_mat4("view", graphics->camera()->view_matrix());
 
         glm::mat4 carousel_model = glm::mat4(1.0f);
         carousel_model = glm::translate(carousel_model, glm::vec3(0.6f, -0.8f, -4.0f));
