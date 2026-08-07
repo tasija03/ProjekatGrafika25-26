@@ -37,6 +37,17 @@ namespace app {
         shader->set_vec3("dirLight.ambient", glm::vec3(0.4f));
         shader->set_vec3("dirLight.diffuse", glm::vec3(0.9f));
         shader->set_vec3("dirLight.specular", glm::vec3(1.5f)); 
+
+        shader->set_vec3("spotLight.position", glm::vec3(0.0f, 8.0f, -10.0f));
+        shader->set_vec3("spotLight.direction", glm::vec3(0.0f, -1.0f, 0.0f));
+        shader->set_float("spotLight.cutOff", glm::cos(glm::radians(12.0f)));
+        shader->set_float("spotLight.outerCutOff", glm::cos(glm::radians(22.0f)));
+        shader->set_float("spotLight.constant", 1.0f);
+        shader->set_float("spotLight.linear", 0.045f);
+        shader->set_float("spotLight.quadratic", 0.0075f);
+        shader->set_vec3("spotLight.ambient", glm::vec3(0.0f));
+        shader->set_vec3("spotLight.diffuse", glm::vec3(2.0f));
+        shader->set_vec3("spotLight.specular", glm::vec3(1.0f));
     }
 
     void MainController::draw_ground(){
@@ -145,10 +156,10 @@ namespace app {
     }
 
     void MainController::draw() {
-        draw_skybox();
         draw_wheel();
         draw_carousel();
         draw_ground();
+        draw_skybox();
     }
 
 
