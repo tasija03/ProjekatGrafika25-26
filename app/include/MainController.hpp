@@ -9,10 +9,10 @@ namespace app {
 
         private:
             bool spotLightEnabled = true;
-            bool lastLKeyState = false;
 
         void initialize() override;
         bool loop() override;
+        void poll_events() override;
         void begin_draw() override;
         void lighting(engine::resources::Shader *shader);
         void draw_wheel();

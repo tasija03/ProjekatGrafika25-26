@@ -20,13 +20,17 @@ namespace app {
             return false;
         }
 
-        bool isLKeyPressed = platform->key(engine::platform::KeyId::KEY_L).is_down();
-        if (isLKeyPressed && !lastLKeyState) {
+        return true;
+    }
+
+    void MainController::poll_events(){
+
+        auto platform = engine::core::Controller::get<engine::platform::PlatformController>();
+        
+        auto isLKeyPressed = platform->key(engine::platform::KeyId::KEY_L).state();
+        if (isLKeyPressed == engine::platform::Key::State::JustPressed) {
             spotLightEnabled = !spotLightEnabled;
         }
-        lastLKeyState = isLKeyPressed;
-
-        return true;
     }
 
     void MainController::lighting(engine::resources::Shader *shader){
@@ -52,7 +56,7 @@ namespace app {
         shader->set_float("spotLight.constant", 1.0f);
         shader->set_float("spotLight.linear", 0.045f);
         shader->set_float("spotLight.quadratic", 0.0075f);
-        
+
         if (spotLightEnabled) {
             shader->set_vec3("spotLight.ambient", glm::vec3(0.0f));
             shader->set_vec3("spotLight.diffuse", glm::vec3(1.0f));
