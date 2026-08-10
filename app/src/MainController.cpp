@@ -12,10 +12,13 @@ namespace app {
 
     void MainController::initialize() {
         engine::graphics::OpenGL::enable_depth_testing();
+        
     }
 
     bool MainController::loop() {
         auto platform = engine::core::Controller::get<engine::platform::PlatformController>();
+        m_curr_time = platform->frame_time().current;
+        
         if(platform->key(engine::platform::KeyId::KEY_ESCAPE).is_down()){
             return false;
         }
@@ -27,9 +30,34 @@ namespace app {
 
         auto platform = engine::core::Controller::get<engine::platform::PlatformController>();
         
-        auto isLKeyPressed = platform->key(engine::platform::KeyId::KEY_L).state();
-        if (isLKeyPressed == engine::platform::Key::State::JustPressed) {
-            spotLightEnabled = !spotLightEnabled;
+        auto is_L_pressed = platform->key(engine::platform::KeyId::KEY_L).state();
+        if (is_L_pressed == engine::platform::Key::State::JustPressed) {
+            spot_light_enabled = !spot_light_enabled;
+        }
+
+        auto is_Space_pressed = platform->key(engine::platform::KeyId::KEY_SPACE).state();
+        if (is_Space_pressed == engine::platform::Key::State::JustPressed){
+            m_event_active = !m_event_active;
+            if (m_event_active == true) {
+                m_event_timer = 0.0f;
+            }
+        }
+    }
+
+    void MainController::update(){
+
+        float dt = engine::core::Controller::get<engine::platform::PlatformController>()->dt();
+
+        update_camera(dt);
+
+        if(m_event_active){
+            m_event_timer += dt;
+            if(m_event_timer >= 3.0f){
+                m_angle = glm::vec3(-1.0f, 0.0f, -1.0f);
+            }
+        }
+        else{
+            m_angle = glm::vec3(1.0f, 0.0f, 1.0f);
         }
     }
 
@@ -57,7 +85,7 @@ namespace app {
         shader->set_float("spotLight.linear", 0.045f);
         shader->set_float("spotLight.quadratic", 0.0075f);
 
-        if (spotLightEnabled) {
+        if (spot_light_enabled) {
             shader->set_vec3("spotLight.ambient", glm::vec3(0.0f));
             shader->set_vec3("spotLight.diffuse", glm::vec3(1.0f));
             shader->set_vec3("spotLight.specular", glm::vec3(1.0f));
@@ -81,7 +109,6 @@ namespace app {
         shader->set_mat4("view", graphics->camera()->view_matrix());
         glm::mat4 stage_model = glm::mat4(1.0f);
         stage_model = glm::translate(stage_model, glm::vec3(0.0f, 2.0f, -10.0f));
-        stage_model = glm::rotate(stage_model, glm::radians(10.0f), glm::vec3(0.0f, 1.0f, 0.0f));
         stage_model = glm::scale(stage_model, glm::vec3(1.0f));
         shader->set_mat4("model", stage_model);
         stage->draw(shader);
@@ -117,12 +144,9 @@ namespace app {
         /*tocak*/
         glm::mat4 model = glm::mat4(1.0f);
 
-        auto curr_time = platform->frame_time().current;
-        auto speed = 1.0f;
-
         model = glm::translate(model, glm::vec3(-0.6f, -0.8f, -4.0f));
         model = glm::translate(model, glm::vec3(0.0f, 0.62f, 0.0f));
-        model = glm::rotate(model, speed*curr_time, glm::normalize(glm::vec3(1.0f, 0.0f, 1.0f)));
+        model = glm::rotate(model, m_curr_time * m_speed, glm::normalize(m_angle));
         model = glm::translate(model, glm::vec3(0.0f, -0.62f, 0.0f));
         model = glm::scale(model, glm::vec3(0.00005f));
 
@@ -141,8 +165,6 @@ namespace app {
         engine::resources::Model *carousel = resources->model("carousel");
         engine::resources::Shader *shader = resources->shader("shader");
 
-        auto curr_time = platform->frame_time().current;
-        auto speed = 1.0f;
 
         shader->use();
         lighting(shader);
@@ -151,7 +173,7 @@ namespace app {
 
         glm::mat4 carousel_model = glm::mat4(1.0f);
         carousel_model = glm::translate(carousel_model, glm::vec3(0.6f, -0.8f, -4.0f));
-        carousel_model = glm::rotate(carousel_model, curr_time*speed, glm::normalize(glm::vec3(0.0f, 1.0f, 0.0f)));
+        carousel_model = glm::rotate(carousel_model, m_curr_time*m_speed, glm::normalize(glm::vec3(0.0f, 1.0f, 0.0f)));
         carousel_model = glm::scale(carousel_model, glm::vec3(0.018f));
         shader->set_mat4("model", carousel_model);
         carousel->draw(shader);
@@ -174,6 +196,7 @@ namespace app {
     }
 
     void MainController::draw() {
+        
         draw_wheel();
         draw_carousel();
         draw_ground();
@@ -184,5 +207,23 @@ namespace app {
     void MainController::end_draw() {
         auto pltform = engine::core::Controller::get<engine::platform::PlatformController>();
         pltform->swap_buffers();
+    }
+
+    void MainController::update_camera(float dt){
+
+        auto camera = engine::core::Controller::get<engine::graphics::GraphicsController>()->camera();
+
+        if(m_event_active){
+            dt = m_event_timer/3.0f;
+            if(dt > 1.0f){
+                dt = 1.0f;
+            }
+            camera->Position = glm::mix(position, glm::vec3(0.4f, -0.8f, -4.0f), dt);
+            camera->Front = glm::mix(front, glm::vec3(-1.0f, 0.5f, 0.0f), dt);
+        }
+        else{
+            camera->Position = position;
+            camera->Front = front;
+        }
     }
 }
