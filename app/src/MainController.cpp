@@ -32,7 +32,7 @@ namespace app {
         
         auto is_L_pressed = platform->key(engine::platform::KeyId::KEY_L).state();
         if (is_L_pressed == engine::platform::Key::State::JustPressed) {
-            spot_light_enabled = !spot_light_enabled;
+            dir_light_enabled = !dir_light_enabled;
         }
 
         auto is_Space_pressed = platform->key(engine::platform::KeyId::KEY_SPACE).state();
@@ -96,7 +96,7 @@ namespace app {
         shader->set_vec3("spotLight.diffuse", glm::vec3(2.0f));
         shader->set_vec3("spotLight.specular", glm::vec3(2.0f));
 
-        if (spot_light_enabled) {
+        if (dir_light_enabled) {
             shader->set_vec3("dirLight.ambient", dir_light_ambient);
             shader->set_vec3("dirLight.diffuse", dir_light_diffuse);
             shader->set_vec3("dirLight.specular", glm::vec3(1.5f)); 

@@ -9,7 +9,7 @@ namespace app {
     class MainController : public engine::core::Controller{
 
         private:
-            bool spot_light_enabled = true;
+            bool dir_light_enabled = true;
             bool m_event_active = false;
             float m_event_timer = 0.0f;
             float m_curr_time = 0.0f;
