@@ -14,6 +14,8 @@ namespace app {
             float m_event_timer = 0.0f;
             float m_curr_time = 0.0f;
             float m_speed = 1.0f;
+            glm::vec3 dir_light_diffuse = glm::vec3(0.5f);
+            glm::vec3 dir_light_ambient = glm::vec3(0.4f);
             glm::vec3 m_angle = glm::vec3(1.0f, 0.0f, 1.0f);
             glm::vec3 position = engine::core::Controller::get<engine::graphics::GraphicsController>()->camera()->Position;
             glm::vec3 front = engine::core::Controller::get<engine::graphics::GraphicsController>()->camera()->Front;
@@ -31,6 +33,7 @@ namespace app {
         void draw() override;
         void end_draw() override;
         void update_camera(float dt);
+        void update_light(float dt);
     };
 }
 

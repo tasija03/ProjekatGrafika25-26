@@ -53,11 +53,20 @@ namespace app {
         if(m_event_active){
             m_event_timer += dt;
             if(m_event_timer >= 3.0f){
+
+                float light_timer = m_event_timer - 3.0f;
+                float t_light = light_timer/2.0f;
+                if(t_light > 1.0f) t_light = 1.0f;
+
+                dir_light_diffuse = glm::mix(glm::vec3(0.5f), glm::vec3(0.01f), t_light);
+                dir_light_ambient = glm::mix(glm::vec3(0.4f), glm::vec3(0.05f), t_light);
                 m_angle = glm::vec3(-1.0f, 0.0f, -1.0f);
             }
         }
         else{
             m_angle = glm::vec3(1.0f, 0.0f, 1.0f);
+            dir_light_diffuse = glm::vec3(0.5f);
+            dir_light_ambient = glm::vec3(0.4f);
         }
     }
 
@@ -65,6 +74,7 @@ namespace app {
 
         auto resources = engine::core::Controller::get<engine::resources::ResourcesController>();
         auto graphics = engine::core::Controller::get<engine::graphics::GraphicsController>();
+        auto platform = engine::core::Controller::get<engine::platform::PlatformController>();
 
         shader->set_vec3("viewPos", graphics->camera()->Position);
 
@@ -73,25 +83,26 @@ namespace app {
         shader->set_vec3("material.specular", glm::vec3(1.5f));
 
         shader->set_vec3("dirLight.direction", glm::vec3(1.0f, -1.0f, 1.0f));
-        shader->set_vec3("dirLight.ambient", glm::vec3(0.4f));
-        shader->set_vec3("dirLight.diffuse", glm::vec3(0.9f));
-        shader->set_vec3("dirLight.specular", glm::vec3(1.5f)); 
 
-        shader->set_vec3("spotLight.position", glm::vec3(0.0f, 8.0f, -10.0f));
+
+        shader->set_vec3("spotLight.position", glm::vec3(0.0f, 10.0f, -10.0f));
         shader->set_vec3("spotLight.direction", glm::vec3(0.0f, -1.0f, 0.0f));
         shader->set_float("spotLight.cutOff", glm::cos(glm::radians(12.0f)));
-        shader->set_float("spotLight.outerCutOff", glm::cos(glm::radians(22.0f)));
+        shader->set_float("spotLight.outerCutOff", glm::cos(glm::radians(25.0f)));
         shader->set_float("spotLight.constant", 1.0f);
         shader->set_float("spotLight.linear", 0.045f);
         shader->set_float("spotLight.quadratic", 0.0075f);
+        shader->set_vec3("spotLight.ambient", glm::vec3(0.0f));
+        shader->set_vec3("spotLight.diffuse", glm::vec3(2.0f));
+        shader->set_vec3("spotLight.specular", glm::vec3(2.0f));
 
         if (spot_light_enabled) {
-            shader->set_vec3("spotLight.ambient", glm::vec3(0.0f));
-            shader->set_vec3("spotLight.diffuse", glm::vec3(1.0f));
-            shader->set_vec3("spotLight.specular", glm::vec3(1.0f));
+            shader->set_vec3("dirLight.ambient", dir_light_ambient);
+            shader->set_vec3("dirLight.diffuse", dir_light_diffuse);
+            shader->set_vec3("dirLight.specular", glm::vec3(1.5f)); 
         } else {
-            shader->set_vec3("spotLight.ambient", glm::vec3(0.0f));
-            shader->set_vec3("spotLight.diffuse", glm::vec3(0.0f));  
+            shader->set_vec3("dirLight.ambient", glm::vec3(0.1f));
+            shader->set_vec3("dirLight.diffuse", glm::vec3(0.0f));  
             shader->set_vec3("spotLight.specular", glm::vec3(0.0f)); 
         }
     }
@@ -136,19 +147,19 @@ namespace app {
         /*stalak od pan. tocka*/
         glm::mat4 stalak_model = glm::mat4(1.0f);
 
-        stalak_model = glm::translate(stalak_model, glm::vec3(-0.6f, -0.8f, -4.0f));
-        stalak_model = glm::scale(stalak_model, glm::vec3(0.00005f));
+        stalak_model = glm::translate(stalak_model, glm::vec3(-0.9f, -2.0f, -10.0f));
+        stalak_model = glm::scale(stalak_model, glm::vec3(0.00015f));
         shader->set_mat4("model", stalak_model);
         stalak->draw(shader);
 
         /*tocak*/
         glm::mat4 model = glm::mat4(1.0f);
 
-        model = glm::translate(model, glm::vec3(-0.6f, -0.8f, -4.0f));
-        model = glm::translate(model, glm::vec3(0.0f, 0.62f, 0.0f));
+        model = glm::translate(model, glm::vec3(-0.9f, -2.0f, -10.0f));
+        model = glm::translate(model, glm::vec3(0.0f, 1.9f, -0.0294f));
         model = glm::rotate(model, m_curr_time * m_speed, glm::normalize(m_angle));
-        model = glm::translate(model, glm::vec3(0.0f, -0.62f, 0.0f));
-        model = glm::scale(model, glm::vec3(0.00005f));
+        model = glm::translate(model, glm::vec3(0.0f, -1.9f, 0.0294f));
+        model = glm::scale(model, glm::vec3(0.00015f));
 
         shader->set_mat4("model", model);
 
@@ -172,9 +183,9 @@ namespace app {
         shader->set_mat4("view", graphics->camera()->view_matrix());
 
         glm::mat4 carousel_model = glm::mat4(1.0f);
-        carousel_model = glm::translate(carousel_model, glm::vec3(0.6f, -0.8f, -4.0f));
+        carousel_model = glm::translate(carousel_model, glm::vec3(0.9f, -2.0f, -10.0f));
         carousel_model = glm::rotate(carousel_model, m_curr_time*m_speed, glm::normalize(glm::vec3(0.0f, 1.0f, 0.0f)));
-        carousel_model = glm::scale(carousel_model, glm::vec3(0.018f));
+        carousel_model = glm::scale(carousel_model, glm::vec3(0.05f));
         shader->set_mat4("model", carousel_model);
         carousel->draw(shader);
  
@@ -218,8 +229,8 @@ namespace app {
             if(dt > 1.0f){
                 dt = 1.0f;
             }
-            camera->Position = glm::mix(position, glm::vec3(0.4f, -0.8f, -4.0f), dt);
-            camera->Front = glm::mix(front, glm::vec3(-1.0f, 0.5f, 0.0f), dt);
+            camera->Position = glm::mix(position, glm::vec3(2.7f, -2.0f, -10.0f), dt);
+            camera->Front = glm::mix(front, glm::vec3(-1.0f, 0.5f, 0.1f), dt);
         }
         else{
             camera->Position = position;
