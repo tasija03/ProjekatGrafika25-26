@@ -3,7 +3,7 @@
 206/2022 - Anastasija Divjak  
 Projekat prikazuje 3D model luna parka gde od modela imamo panoramski tocak i ringispil, kao i podlogu na kojoj se nalaze.
 Osvetljen je sa 2 tipa svetla, Directional i Spot light, gde se directional moze paliti/gasiti pomocu tastature. Od dodatnih efekata
-imamo blagi bloom efekat koji doprinosi odsjaju modela na sceni.
+imamo blagi bloom efekat koji doprinosi sjaju svetlih delova modela na sceni.
 
 ## Controls
 
@@ -15,8 +15,8 @@ BUTTON SPACE -> POMERAMO SE BLIZE SCENI I PRIGUSUJE SE SVETLO
 ### Fundamental:
 
 [X] Model with lighting
-[X] Two types of lighting with customizable colors and movement through GUI or ACTIONS
-[X] {ACTION_X} --- AFTER_M_SECONDS---Triggers---> {EVENT_A} ---> AFTER_N_SECONDS---Triggers---> {EVENT_B}
+[X] Two types of lighting with customizable parameters through ACTIONS
+[X] SPACE --- KAMERA SE POMERA ---> AFTER_3_SECONDS---Triggers---> KAMERA STAJE ---> AFTER_2_SECONDS---Triggers---> PRIGUSUJE SE SVETLO I MENJA SE SMER ROTACIJE OBJEKATA
 
 ### Group A:
 
@@ -36,14 +36,13 @@ BUTTON SPACE -> POMERAMO SE BLIZE SCENI I PRIGUSUJE SE SVETLO
 
 ## Models:
 
-[https://www.cgtrader.com/free-3d-models/exterior/other/carousel--2]   
-[https://www.cgtrader.com/free-3d-models/furniture/outdoor-furniture/carosuel-for-funfair]
-[https://www.cgtrader.com/items/4310450/download-page]
+Panoramski tocak: [https://www.cgtrader.com/free-3d-models/exterior/other/carousel--2]   
+Ringispil: [https://www.cgtrader.com/free-3d-models/furniture/outdoor-furniture/carosuel-for-funfair]
+Podloga: [https://www.cgtrader.com/items/4310450/download-page]
 
 ## Textures
 
-[link1]  
-[link2]
+Nema dodatnih tekstura
 
 ## Skybox
 
