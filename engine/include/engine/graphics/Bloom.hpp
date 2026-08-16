@@ -35,6 +35,10 @@ private:
 
     uint32_t m_pingpong_fbo[2] = {0, 0};
     uint32_t m_pingpong_colorbuffers[2] = {0, 0};
+
+    uint32_t m_quad_vao = 0;
+    uint32_t m_quad_vbo = 0;
+
 };
 
 }
