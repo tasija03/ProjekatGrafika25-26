@@ -4,11 +4,13 @@
 #include <engine/core/Controller.hpp>
 #include <engine/resources/Shader.hpp>
 #include <engine/graphics/GraphicsController.hpp>
+#include <engine/graphics/Bloom.hpp>
 
 namespace app {
     class MainController : public engine::core::Controller{
 
         private:
+            engine::graphics::Bloom m_bloom;
             bool dir_light_enabled = true;
             bool m_event_active = false;
             float m_event_timer = 0.0f;
@@ -30,6 +32,7 @@ namespace app {
         void draw_carousel();
         void draw_ground();
         void draw_skybox();
+        void draw_light_fixture();
         void draw() override;
         void end_draw() override;
         void update_camera(float dt);

@@ -12,6 +12,8 @@ namespace app {
 
     void MainController::initialize() {
         engine::graphics::OpenGL::enable_depth_testing();
+        auto platform = engine::core::Controller::get<engine::platform::PlatformController>();
+        m_bloom.initialize(platform->window()->width(), platform->window()->height());
         
     }
 
@@ -191,6 +193,26 @@ namespace app {
  
     }
 
+    void MainController::draw_light_fixture(){
+
+        auto resources = engine::core::Controller::get<engine::resources::ResourcesController>();
+        auto graphics = engine::core::Controller::get<engine::graphics::GraphicsController>();
+
+        engine::resources::Shader *shader = resources->shader("bulb");
+
+        shader->use();
+        shader->set_mat4("projection", graphics->projection_matrix());
+        shader->set_mat4("view", graphics->camera()->view_matrix());
+        shader->set_vec3("bulbColor", glm::vec3(6.0f, 5.2f, 2.0f));
+
+        glm::mat4 model = glm::mat4(1.0f);
+        model = glm::translate(model, glm::vec3(0.0f, 10.0f, -10.0f));
+        model = glm::scale(model, glm::vec3(0.3f));
+        shader->set_mat4("model", model);
+
+        graphics->draw_cube(shader);
+    }
+
     void MainController::draw_skybox(){
 
         auto resources = engine::core::Controller::get<engine::resources::ResourcesController>();
@@ -203,19 +225,23 @@ namespace app {
 
     void MainController::begin_draw() {
         engine::graphics::OpenGL::clear_buffers();
-
+        m_bloom.begin();
     }
 
     void MainController::draw() {
-        
         draw_wheel();
         draw_carousel();
         draw_ground();
+        draw_light_fixture();
         draw_skybox();
     }
 
-
     void MainController::end_draw() {
+        auto resources = engine::core::Controller::get<engine::resources::ResourcesController>();
+
+        m_bloom.end();
+        m_bloom.render(resources->shader("blur"), resources->shader("bloom_final"), 10, 1.0f);
+
         auto pltform = engine::core::Controller::get<engine::platform::PlatformController>();
         pltform->swap_buffers();
     }

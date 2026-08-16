@@ -39,7 +39,8 @@ void main()
 
 #version 330 core
 
-out vec4 FragColor;
+layout(location = 0) out vec4 FragColor;
+layout(location = 1) out vec4 BrightColor;
 
 in vec3 FragPos;
 in vec3 Normal;
@@ -92,7 +93,7 @@ vec3 CalcDirLight(DirLight light, vec3 normal, vec3 viewDir)
     vec3 reflectDir = reflect(-lightDir, normal);
     float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
     
-    vec3 specular = light.specular * spec * material.specular;
+    vec3 specular = light.specular * spec * color;
 
     return (ambient + diffuse + specular);
 }
@@ -117,7 +118,7 @@ vec3 CalcSpotLight(SpotLight light, vec3 normal, vec3 fragPos, vec3 viewDir)
     vec3 diffuse = light.diffuse * diff * color;
     vec3 specular = light.specular * spec * color;
 
-    ambient *= attenuation * intensity;
+    ambient *= attenuation;
     diffuse *= attenuation * intensity;
     specular *= attenuation * intensity;
 
@@ -138,4 +139,12 @@ void main()
     result += CalcSpotLight(spotLight, normal, FragPos, viewDir);
 
     FragColor = vec4(result, 1.0);
+
+    float brightness = dot(FragColor.rgb, vec3(0.2126, 0.7152, 0.0722));
+    if (brightness > 1.0) {
+        BrightColor = vec4(FragColor.rgb, 1.0);
+    } else {
+        BrightColor = vec4(0.0, 0.0, 0.0, 1.0);
+    }
+
 }
