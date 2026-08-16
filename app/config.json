@@ -1,18 +1,27 @@
 {
   "window": {
-    "width": 800,
-    "height": 600,
+    "width": 1200,
+    "height": 1000,
     "title": "LunaPark Project"
   },
   "resources": {
     "models": {
-      "wheel": {
-        "path": "wheel/3d-model.obj",
+      "wheel": { 
+        "path": "wheel/wheel.obj",
+        "flip_uvs": false
+      },
+      "stalak": { 
+        "path": "wheel/stalak.obj",
+        "flip_uvs": false
+      },
+      "carousel": { 
+        "path": "carousel/carousel.obj",
+        "flip_uvs": false
+      },
+      "stage": { 
+        "path": "stage/stage.obj",
         "flip_uvs": false
       }
-    },
-    "shaders": {
-      "shader": "shader.glsl"
-    }
+    } 
   }
 }
