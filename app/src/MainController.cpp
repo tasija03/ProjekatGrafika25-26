@@ -54,9 +54,9 @@ namespace app {
 
         if(m_event_active){
             m_event_timer += dt;
-            if(m_event_timer >= 3.0f){
+            if(m_event_timer >= 5.0f){
 
-                float light_timer = m_event_timer - 3.0f;
+                float light_timer = m_event_timer - 5.0f;
                 float t_light = light_timer/2.0f;
                 if(t_light > 1.0f) t_light = 1.0f;
 
