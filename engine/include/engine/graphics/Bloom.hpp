@@ -18,9 +18,9 @@ public:
     void end();
 
     void render(engine::resources::Shader *blur_shader,
-               engine::resources::Shader *combine_shader,
-               int blur_passes = 10,
-               float exposure = 1.0f);
+                engine::resources::Shader *combine_shader,
+                int blur_passes = 10,
+                float exposure = 1.0f);
 
     void destroy();
 
@@ -42,9 +42,8 @@ private:
 
     uint32_t m_quad_vao = 0;
     uint32_t m_quad_vbo = 0;
-
 };
 
-}
+}// namespace engine::graphics
 
 #endif

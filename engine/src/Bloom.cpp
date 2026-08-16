@@ -75,15 +75,14 @@ void Bloom::init_screen_quad() {
         return;
     }
     float quad_vertices[] = {
-        // positions   // texCoords
-        -1.0f,  1.0f,  0.0f, 1.0f,
-        -1.0f, -1.0f,  0.0f, 0.0f,
-         1.0f, -1.0f,  1.0f, 0.0f,
+            // positions   // texCoords
+            -1.0f, 1.0f, 0.0f, 1.0f,
+            -1.0f, -1.0f, 0.0f, 0.0f,
+            1.0f, -1.0f, 1.0f, 0.0f,
 
-        -1.0f,  1.0f,  0.0f, 1.0f,
-         1.0f, -1.0f,  1.0f, 0.0f,
-         1.0f,  1.0f,  1.0f, 1.0f
-    };
+            -1.0f, 1.0f, 0.0f, 1.0f,
+            1.0f, -1.0f, 1.0f, 0.0f,
+            1.0f, 1.0f, 1.0f, 1.0f};
 
     CHECKED_GL_CALL(glGenVertexArrays, 1, &m_quad_vao);
     CHECKED_GL_CALL(glGenBuffers, 1, &m_quad_vbo);
@@ -156,4 +155,4 @@ void Bloom::destroy() {
     m_initialized = false;
 }
 
-}
+}// namespace engine::graphics
