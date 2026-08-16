@@ -17,6 +17,17 @@ void Bloom::initialize(int width, int height) {
     m_initialized = true;
 }
 
+void Bloom::begin() {
+    CHECKED_GL_CALL(glBindFramebuffer, GL_FRAMEBUFFER, m_hdr_fbo);
+    CHECKED_GL_CALL(glViewport, 0, 0, m_width, m_height);
+    CHECKED_GL_CALL(glClearColor, 0.0f, 0.0f, 0.0f, 1.0f);
+    CHECKED_GL_CALL(glClear, GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+}
+
+void Bloom::end() {
+    CHECKED_GL_CALL(glBindFramebuffer, GL_FRAMEBUFFER, 0);
+}
+
 void Bloom::init_hdr_fbo() {
     CHECKED_GL_CALL(glGenFramebuffers, 1, &m_hdr_fbo);
     CHECKED_GL_CALL(glBindFramebuffer, GL_FRAMEBUFFER, m_hdr_fbo);
