@@ -34,7 +34,7 @@ namespace app {
         
         auto is_L_pressed = platform->key(engine::platform::KeyId::KEY_L).state();
         if (is_L_pressed == engine::platform::Key::State::JustPressed) {
-            dir_light_enabled = !dir_light_enabled;
+            m_dir_light_enabled = !m_dir_light_enabled;
         }
 
         auto is_Space_pressed = platform->key(engine::platform::KeyId::KEY_SPACE).state();
@@ -60,15 +60,15 @@ namespace app {
                 float t_light = light_timer/2.0f;
                 if(t_light > 1.0f) t_light = 1.0f;
 
-                dir_light_diffuse = glm::mix(glm::vec3(0.5f), glm::vec3(0.01f), t_light);
-                dir_light_ambient = glm::mix(glm::vec3(0.4f), glm::vec3(0.05f), t_light);
+                m_dir_light_diffuse = glm::mix(glm::vec3(0.5f), glm::vec3(0.01f), t_light);
+                m_dir_light_ambient = glm::mix(glm::vec3(0.4f), glm::vec3(0.05f), t_light);
                 m_angle = glm::vec3(-1.0f, 0.0f, -1.0f);
             }
         }
         else{
             m_angle = glm::vec3(1.0f, 0.0f, 1.0f);
-            dir_light_diffuse = glm::vec3(0.5f);
-            dir_light_ambient = glm::vec3(0.4f);
+            m_dir_light_diffuse = glm::vec3(0.5f);
+            m_dir_light_ambient = glm::vec3(0.4f);
         }
     }
 
@@ -98,9 +98,9 @@ namespace app {
         shader->set_vec3("spotLight.diffuse", glm::vec3(2.0f));
         shader->set_vec3("spotLight.specular", glm::vec3(2.0f));
 
-        if (dir_light_enabled) {
-            shader->set_vec3("dirLight.ambient", dir_light_ambient);
-            shader->set_vec3("dirLight.diffuse", dir_light_diffuse);
+        if (m_dir_light_enabled) {
+            shader->set_vec3("dirLight.ambient", m_dir_light_ambient);
+            shader->set_vec3("dirLight.diffuse", m_dir_light_diffuse);
             shader->set_vec3("dirLight.specular", glm::vec3(1.5f)); 
         } else {
             shader->set_vec3("dirLight.ambient", glm::vec3(0.1f));
@@ -255,12 +255,12 @@ namespace app {
             if(dt > 1.0f){
                 dt = 1.0f;
             }
-            camera->Position = glm::mix(position, glm::vec3(2.7f, -2.0f, -10.0f), dt);
-            camera->Front = glm::mix(front, glm::vec3(-1.0f, 0.5f, 0.1f), dt);
+            camera->Position = glm::mix(m_position, glm::vec3(2.7f, -2.0f, -10.0f), dt);
+            camera->Front = glm::mix(m_front, glm::vec3(-1.0f, 0.5f, 0.1f), dt);
         }
         else{
-            camera->Position = position;
-            camera->Front = front;
+            camera->Position = m_position;
+            camera->Front = m_front;
         }
     }
 }
