@@ -97,5 +97,18 @@ void Bloom::init_screen_quad() {
     CHECKED_GL_CALL(glBindVertexArray, 0);
 }
 
+void Bloom::destroy() {
+    if (!m_initialized) {
+        return;
+    }
+    glDeleteFramebuffers(1, &m_hdr_fbo);
+    glDeleteTextures(2, m_color_buffers);
+    glDeleteRenderbuffers(1, &m_depth_rbo);
+    glDeleteFramebuffers(2, m_pingpong_fbo);
+    glDeleteTextures(2, m_pingpong_colorbuffers);
+    glDeleteVertexArrays(1, &m_quad_vao);
+    glDeleteBuffers(1, &m_quad_vbo);
+    m_initialized = false;
+}
 
 }
