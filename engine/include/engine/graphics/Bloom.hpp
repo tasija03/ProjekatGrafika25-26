@@ -28,6 +28,10 @@ private:
     int m_width = 0;
     int m_height = 0;
     bool m_initialized = false;
+
+    uint32_t m_hdr_fbo = 0;
+    uint32_t m_color_buffers[2] = {0, 0};
+    uint32_t m_depth_rbo = 0;
 };
 
 }
