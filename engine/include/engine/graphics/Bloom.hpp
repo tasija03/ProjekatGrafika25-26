@@ -17,8 +17,17 @@ public:
     void begin();
     void end();
 
+
     void destroy();
 
+private:
+    void init_hdr_fbo();
+    void init_pingpong_fbo();
+    void init_screen_quad();
+
+    int m_width = 0;
+    int m_height = 0;
+    bool m_initialized = false;
 };
 
 }
