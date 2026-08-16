@@ -17,6 +17,28 @@ void Bloom::initialize(int width, int height) {
     m_initialized = true;
 }
 
+void Bloom::resize(int width, int height) {
+    if (width <= 0 || height <= 0) {
+        return;
+    }
+    m_width = width;
+    m_height = height;
+
+    if (!m_initialized) {
+        initialize(width, height);
+        return;
+    }
+
+    glDeleteFramebuffers(1, &m_hdr_fbo);
+    glDeleteTextures(2, m_color_buffers);
+    glDeleteRenderbuffers(1, &m_depth_rbo);
+    glDeleteFramebuffers(2, m_pingpong_fbo);
+    glDeleteTextures(2, m_pingpong_colorbuffers);
+
+    init_hdr_fbo();
+    init_pingpong_fbo();
+}
+
 void Bloom::begin() {
     CHECKED_GL_CALL(glBindFramebuffer, GL_FRAMEBUFFER, m_hdr_fbo);
     CHECKED_GL_CALL(glViewport, 0, 0, m_width, m_height);

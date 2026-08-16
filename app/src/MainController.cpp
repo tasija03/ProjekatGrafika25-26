@@ -103,7 +103,7 @@ void MainController::lighting(engine::resources::Shader *shader) {
     } else {
         shader->set_vec3("dirLight.ambient", glm::vec3(0.1f));
         shader->set_vec3("dirLight.diffuse", glm::vec3(0.0f));
-        shader->set_vec3("spotLight.specular", glm::vec3(0.0f));
+        shader->set_vec3("dirLight.specular", glm::vec3(0.0f));
     }
 }
 
