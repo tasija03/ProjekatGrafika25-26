@@ -17,6 +17,10 @@ public:
     void begin();
     void end();
 
+    void render(engine::resources::Shader *blur_shader,
+               engine::resources::Shader *combine_shader,
+               int blur_passes = 10,
+               float exposure = 1.0f);
 
     void destroy();
 

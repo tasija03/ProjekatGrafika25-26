@@ -97,6 +97,51 @@ void Bloom::init_screen_quad() {
     CHECKED_GL_CALL(glBindVertexArray, 0);
 }
 
+void Bloom::render(engine::resources::Shader *blur_shader,
+                   engine::resources::Shader *combine_shader,
+                   int blur_passes,
+                   float exposure) {
+    bool horizontal = true;
+    bool first_iteration = true;
+    blur_shader->use();
+    for (int i = 0; i < blur_passes; i++) {
+        CHECKED_GL_CALL(glBindFramebuffer, GL_FRAMEBUFFER, m_pingpong_fbo[horizontal]);
+        blur_shader->set_bool("horizontal", horizontal);
+        CHECKED_GL_CALL(glActiveTexture, GL_TEXTURE0);
+        CHECKED_GL_CALL(glBindTexture, GL_TEXTURE_2D,
+                        first_iteration ? m_color_buffers[1] : m_pingpong_colorbuffers[!horizontal]);
+        blur_shader->set_int("image", 0);
+
+        CHECKED_GL_CALL(glBindVertexArray, m_quad_vao);
+        CHECKED_GL_CALL(glDrawArrays, GL_TRIANGLES, 0, 6);
+
+        horizontal = !horizontal;
+        if (first_iteration) {
+            first_iteration = false;
+        }
+    }
+
+    CHECKED_GL_CALL(glBindFramebuffer, GL_FRAMEBUFFER, 0);
+    CHECKED_GL_CALL(glViewport, 0, 0, m_width, m_height);
+    CHECKED_GL_CALL(glClear, GL_COLOR_BUFFER_BIT);
+
+    combine_shader->use();
+    CHECKED_GL_CALL(glActiveTexture, GL_TEXTURE0);
+    CHECKED_GL_CALL(glBindTexture, GL_TEXTURE_2D, m_color_buffers[0]);
+    combine_shader->set_int("scene", 0);
+    CHECKED_GL_CALL(glActiveTexture, GL_TEXTURE1);
+    CHECKED_GL_CALL(glBindTexture, GL_TEXTURE_2D, m_pingpong_colorbuffers[!horizontal]);
+    combine_shader->set_int("bloomBlur", 1);
+    combine_shader->set_bool("bloom", true);
+    combine_shader->set_float("exposure", exposure);
+    combine_shader->set_float("bloomStrength", 0.2f);
+
+    CHECKED_GL_CALL(glBindVertexArray, m_quad_vao);
+    CHECKED_GL_CALL(glDrawArrays, GL_TRIANGLES, 0, 6);
+    CHECKED_GL_CALL(glBindVertexArray, 0);
+}
+
+
 void Bloom::destroy() {
     if (!m_initialized) {
         return;
