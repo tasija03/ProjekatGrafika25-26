@@ -10,10 +10,22 @@
 
 namespace app {
 
+class BloomResizeObserver : public engine::platform::PlatformEventObserver {
+public:
+    explicit BloomResizeObserver(engine::graphics::Bloom *bloom) : m_bloom(bloom) {}
+    void on_window_resize(int width, int height) override {
+        m_bloom->resize(width, height);
+    }
+private:
+    engine::graphics::Bloom *m_bloom;
+};
+
 void MainController::initialize() {
     engine::graphics::OpenGL::enable_depth_testing();
     auto platform = engine::core::Controller::get<engine::platform::PlatformController>();
     m_bloom.initialize(platform->window()->width(), platform->window()->height());
+
+    platform->register_platform_event_observer(std::make_unique<BloomResizeObserver>(&m_bloom));
 }
 
 bool MainController::loop() {
@@ -103,7 +115,7 @@ void MainController::lighting(engine::resources::Shader *shader) {
     } else {
         shader->set_vec3("dirLight.ambient", glm::vec3(0.1f));
         shader->set_vec3("dirLight.diffuse", glm::vec3(0.0f));
-        shader->set_vec3("spotLight.specular", glm::vec3(0.0f));
+        shader->set_vec3("dirLight.specular", glm::vec3(0.0f));
     }
 }
 
