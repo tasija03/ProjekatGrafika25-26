@@ -7,6 +7,7 @@
 #include <engine/resources/Shader.hpp>
 
 namespace app {
+
 class MainController : public engine::core::Controller {
 
 private:
