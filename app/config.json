@@ -1,11 +1,27 @@
 {
+  "window": {
+    "width": 1200,
+    "height": 1000,
+    "title": "LunaPark Project"
+  },
   "resources": {
     "models": {
-    }
-  },
-  "window": {
-    "height": 600,
-    "title": "Hello, window!",
-    "width": 800
+      "wheel": { 
+        "path": "wheel/wheel.obj",
+        "flip_uvs": false
+      },
+      "stalak": { 
+        "path": "wheel/stalak.obj",
+        "flip_uvs": false
+      },
+      "carousel": { 
+        "path": "carousel/carousel.obj",
+        "flip_uvs": false
+      },
+      "stage": { 
+        "path": "stage/stage.obj",
+        "flip_uvs": false
+      }
+    } 
   }
 }
