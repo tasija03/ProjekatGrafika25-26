@@ -20,8 +20,8 @@ private:
     glm::vec3 m_dir_light_diffuse = glm::vec3(0.5f);
     glm::vec3 m_dir_light_ambient = glm::vec3(0.4f);
     glm::vec3 m_angle = glm::vec3(1.0f, 0.0f, 1.0f);
-    glm::vec3 m_position = engine::core::Controller::get<engine::graphics::GraphicsController>()->camera()->Position;
-    glm::vec3 m_front = engine::core::Controller::get<engine::graphics::GraphicsController>()->camera()->Front;
+    glm::vec3 m_position;
+    glm::vec3 m_front;
 
     void initialize() override;
     bool loop() override;

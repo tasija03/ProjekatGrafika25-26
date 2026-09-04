@@ -155,7 +155,7 @@ void Bloom::render(engine::resources::Shader *blur_shader,
     combine_shader->set_int("bloomBlur", 1);
     combine_shader->set_bool("bloom", true);
     combine_shader->set_float("exposure", exposure);
-    combine_shader->set_float("bloomStrength", 0.2f);
+    combine_shader->set_float("bloomStrength", 0.9f);
 
     CHECKED_GL_CALL(glBindVertexArray, m_quad_vao);
     CHECKED_GL_CALL(glDrawArrays, GL_TRIANGLES, 0, 6);
