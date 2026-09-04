@@ -26,6 +26,9 @@ void MainController::initialize() {
     m_bloom.initialize(platform->window()->width(), platform->window()->height());
 
     platform->register_platform_event_observer(std::make_unique<BloomResizeObserver>(&m_bloom));
+
+    m_position = engine::core::Controller::get<engine::graphics::GraphicsController>()->camera()->Position;
+    m_front = engine::core::Controller::get<engine::graphics::GraphicsController>()->camera()->Front;
 }
 
 bool MainController::loop() {
@@ -212,8 +215,8 @@ void MainController::draw_light_fixture() {
     shader->set_vec3("bulbColor", glm::vec3(6.0f, 5.2f, 2.0f));
 
     glm::mat4 model = glm::mat4(1.0f);
-    model = glm::translate(model, glm::vec3(0.0f, 10.0f, -10.0f));
-    model = glm::scale(model, glm::vec3(0.3f));
+    model = glm::translate(model, glm::vec3(0.0f, 3.0f, -10.0f));
+    model = glm::scale(model, glm::vec3(0.25f));
     shader->set_mat4("model", model);
 
     graphics->draw_cube(shader);
