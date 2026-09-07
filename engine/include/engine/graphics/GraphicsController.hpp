@@ -86,6 +86,8 @@ public:
     */
     void draw_skybox(const resources::Shader *shader, const resources::Skybox *skybox);
 
+    void draw_cube(const resources::Shader *shader);
+
     Camera *camera() {
         return &m_camera;
     }
